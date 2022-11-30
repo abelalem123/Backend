@@ -1,6 +1,6 @@
 const{request,response}=require('express')
 require('dotenv').config()
-const Note=require('./model/persons')
+const Person=require('./model/persons')
 const express=require('express')
 var morgan=require('morgan')
 const app=express();
@@ -33,8 +33,8 @@ let persons=[
   }
 ]
 app.get('/api/persons',(request,response)=>{
- Note.find({}).then((notes)=>{
-  response.json(notes)
+ Person.find({}).then((persons)=>{
+  response.json(persons)
  })
   
 })
@@ -71,18 +71,18 @@ return response.status(404).json({
   error:"name or number is missing"
 })
 }
-else if(dublicate){
-  return response.status(404).json({error:"name already exist"})
-}
+// else if(dublicate){
+//   return response.status(404).json({error:"name already exist"})
+// }
 
-const person={
-  id:Math.floor(Math.random() * (100 - maxId) + maxId)+1,
+const person=new Person({
+  
   name:body.name,
   number:body.number
-}
-
-persons=persons.concat(person)
-response.json(persons)
+})
+person.save().then((savedPerson)=>{
+  response.json(savedPerson)
+})
 })
 const port=process.env.PORT
 app.listen(port,()=>console.log(`server is running on port ${port}`))
