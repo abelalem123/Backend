@@ -1,7 +1,7 @@
-const moongoose=require('mongoose')
+const mongoose=require('mongoose')
 const url=process.env.MONGODB_URI
 
-moongoose.connect(url).then((res)=>{
+mongoose.connect(url).then((res)=>{
     console.log('connected to MongoDB');
 }).catch((error)=>{
 console.log('error connecting',error.message);

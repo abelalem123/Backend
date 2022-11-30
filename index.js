@@ -84,5 +84,5 @@ const person={
 persons=persons.concat(person)
 response.json(persons)
 })
-const port=3001
+const port=process.env.PORT
 app.listen(port,()=>console.log(`server is running on port ${port}`))
