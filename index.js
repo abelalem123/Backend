@@ -1,4 +1,6 @@
 const{request,response}=require('express')
+require('dotenv').config()
+const Note=require('./model/persons')
 const express=require('express')
 var morgan=require('morgan')
 const app=express();
@@ -31,7 +33,9 @@ let persons=[
   }
 ]
 app.get('/api/persons',(request,response)=>{
-  response.json(persons)
+ Note.find({}).then((notes)=>{
+  response.json(notes)
+ })
   
 })
 
