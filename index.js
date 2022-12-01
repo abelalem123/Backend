@@ -51,21 +51,25 @@ app.get('/api/persons',(request,response)=>{
 
 app.get('/api/info',(request,response)=>{
   console.log(new Date());
-const obj={
-  title:`Phonebook has info for ${persons.length} peoples`,
+  Person.find({}).then(persons=>{
+    const obj={
+      title:`Phonebook has info for ${persons.length} peoples`,
+    
+      len:new Date()
+    }
+      response.send(obj.title+ ' \n'+obj.len)
+  })
 
-  len:new Date()
-}
-  response.send(obj.title+ ' \n'+obj.len)
 })
 app.get('/api/persons/:id',(request,response)=>{
-  const id=Number(request.params.id)
-  console.log(id);
-  const person=persons.find((pers)=>pers.id===id)
-  if(!person){
-    response.status(404).end()
-  }
-  response.json(person)
+  Person.findById(request.params.id).then((person)=>{
+    if(person){
+      response.json(person)
+    }
+    else {
+      response.status(404).end();
+    }
+  }).catch(error=>next(error))
 })
 app.delete('/api/persons/:id',(request,response)=>{
   Person.findByIdAndRemove(request.params.id).then((result)=>response.status(204).end())
