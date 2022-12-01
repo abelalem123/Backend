@@ -22,7 +22,7 @@ else if (error.name === 'ValidationError') {
 }
 next(error)
 }
-
+app.use(errorHandler)
 
 let persons=[
   { 
