@@ -22,7 +22,7 @@ else if (error.name === 'ValidationError') {
 }
 next(error)
 }
-app.use(errorHandler)
+
 
 let persons=[
   { 
@@ -106,5 +106,6 @@ app.put('/api/persons/:id',(request,response)=>{
   const body=request.body
   Person.findByIdAndUpdate(request.params.id,{"number":body.number},).then(updatePerson=>response.json(updatePerson)).catch(error=>next(error))
 })
+app.use(errorHandler)
 const port=process.env.PORT
 app.listen(port,()=>console.log(`server is running on port ${port}`))
