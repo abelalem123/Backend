@@ -10,6 +10,16 @@ morgan.token('body', function (req, res) {
  
   return   JSON.stringify(req.body)})
 app.use( morgan(':method :url :status :res[content-length] - :response-time ms :body'))
+
+const errorHandler=(error,request,response,next)=>{
+console.log(error);
+if (error.name === 'CastError') {
+  return response.status(400).send({ error: 'malformatted id' })
+} 
+next(error)
+}
+
+
 let persons=[
   { 
     "id": 1,
@@ -65,14 +75,14 @@ app.delete('/api/persons/:id',(request,response)=>{
 app.post('/api/persons',(request,response)=>{
 const body=request.body
 const maxId=Math.max(...persons.map((person)=>person.id))
-const dublicate=persons.find((pers)=>pers.name.toUpperCase()===body.name.toUpperCase())
+const duplicate=persons.find((pers)=>pers.name.toUpperCase()===body.name.toUpperCase())
 if(!body.number||!body.name){
 return response.status(404).json({
   error:"name or number is missing"
 })
 }
-// else if(dublicate){
-//   return response.status(404).json({error:"name already exist"})
+// else if(duplicate){
+// response.status(409).end()
 // }
 
 const person=new Person({
@@ -83,6 +93,10 @@ const person=new Person({
 person.save().then((savedPerson)=>{
   response.json(savedPerson)
 })
+})
+app.put('/api/persons/:id',(request,response)=>{
+  const body=request.body
+  Person.findByIdAndUpdate(request.params.id,{"number":body.number},).then(updatePerson=>response.json(updatePerson)).catch(error=>next(error))
 })
 const port=process.env.PORT
 app.listen(port,()=>console.log(`server is running on port ${port}`))
