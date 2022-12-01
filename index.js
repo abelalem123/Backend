@@ -65,7 +65,7 @@ app.get('/api/info',(request,response)=>{
   })
 
 })
-app.get('/api/persons/:id',(request,response)=>{
+app.get('/api/persons/:id',(request,responsen,next)=>{
   Person.findById(request.params.id).then((person)=>{
     if(person){
       response.json(person)
@@ -80,11 +80,11 @@ app.delete('/api/persons/:id',(request,response)=>{
   
   
 })
-app.post('/api/persons',(request,response)=>{
+app.post('/api/persons',(request,response,next)=>{
 const body=request.body
 const maxId=Math.max(...persons.map((person)=>person.id))
 const duplicate=persons.find((pers)=>pers.name.toUpperCase()===body.name.toUpperCase())
-if(!body.number||!body.name){
+if(!body.name){
 return response.status(404).json({
   error:"name or number is missing"
 })
