@@ -99,7 +99,7 @@ const person=new Person({
 })
 person.save().then((savedPerson)=>{
   response.json(savedPerson)
-})
+}).catch(error=>next(error))
 })
 app.put('/api/persons/:id',(request,response)=>{
   const body=request.body
