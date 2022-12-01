@@ -16,6 +16,9 @@ console.log(error);
 if (error.name === 'CastError') {
   return response.status(400).send({ error: 'malformatted id' })
 } 
+else if(error.name==='Validation Error'){
+  return response.status(400).json({error:error.message})
+}
 next(error)
 }
 
