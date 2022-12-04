@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const mongoose = require('mongoose')
 
 if (process.argv.length < 5) {
@@ -6,8 +7,8 @@ if (process.argv.length < 5) {
 }
 
 const password = process.argv[2]
-const name= process.argv[3]
-const number=process.argv[4]
+const name = process.argv[3]
+const number = process.argv[4]
 const url = `mongodb+srv://abel:${password}@cluster0.6a0hpkr.mongodb.net/phonebook?retryWrites=true&w=majority`
 
 const personSchema = new mongoose.Schema({
@@ -19,11 +20,11 @@ const Person = mongoose.model('Person', personSchema)
 
 mongoose
   .connect(url)
-  .then((result) => {
+  .then(() => {
     console.log('connected')
 
     const person = new Person({
-      name:name,
+      name: name,
       number: number,
     })
 
